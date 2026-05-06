@@ -1,0 +1,68 @@
+from flask import Flask, request
+from twilio.twiml.messaging_response import MessagingResponse
+
+app = Flask(__name__)
+@app.route('/', methods=['GET'])
+def home():
+    return 'Blessing bot is LIVE! ✅'
+def auto_reply(message):
+    message = message.lower().strip()
+    if "hi" in message or "hey" in message or "hello" in message or "good morning" in message or "good evening" in message :
+        return "Hello  👋 welcome, this is Blessing how may i be of services. "
+    elif "location" in message or "where" in message or "place" in message or "destination" in message or "which place" in message :
+        return "am at school. "
+    elif "what is your name" in message or "who are you" in message or "who is this" in message :
+        return "Hi this is Blessing. "
+    elif "how are you doing" in message or "what xup" in message or "afar" in message :
+        return "Am fine, how are you doing? "
+    elif "have you eaten" in message :
+        return "yes i have eaten 😊, what about you? "
+    elif "what did you eat" in message or "what did you ate" in message or "wetin you chop" in message :
+        return "nothing much. "
+    elif "what are you doing" in message :
+        return "chatting with you, what do you think. "
+    elif "me am tired" in message or "i just tire" in message or "what should we do" in message :
+        return "chai. "
+    elif "you go school today" in message or "are you in  school" in message :
+        return "yes i go, what about you? "
+    elif "i nor go" in message :
+        return "okay na, why?"
+    elif "dey hungry" in message or "food dey" in message or "wetin you cook" in message :
+        return "me self dey hungry 🤣. "
+    elif "anything for me" in message :
+        return "afar nothing dey oo😔. "
+    elif "you fit help me" in message or "you fit find me small thing" in message or "you fit help me with 1k" in message or "find me small thing" in message :
+        return "we dey hope on God oo and manage we dey. "
+    elif "how body" in message or "how your health" in message :
+        return "i dey oo."
+    elif "you don sleep" in message :
+        return " no am still awake. "
+    elif "hmmm" in message or "hmmmmm" in message or "ehnn" in message :
+        return "what. "
+    elif "later" in message or "another time" in message :
+        return "no probs."
+    elif "i love you" in message or "babe i love you" in message :
+        return "thanks. "
+    elif "send pics" in message or "send picture" in message :
+        return "sorry i can't help you with that request. "
+    elif "do you love me" in message or "are you in love with me" in message :
+        return "depends on what. "
+    elif "what do you think" in message or "how is it" in message :
+        return "well nice🤭 ."
+    elif "bye" in message :
+            return "bye."
+    elif "help" in message or "what can you do" in message:
+        return "I can chat with you! Try saying hi, how are you, where are you, what are you doing, or bye 👋"
+    else:
+       return "sorry, i don't get you 🤗."
+@app.route("/whatsapp", methods=['POST'])
+def whatsapp_bot():
+    incoming_msg = request.values.get('Body', '')
+    resp = MessagingResponse()
+    if not incoming_msg:  
+        return str(MessagingResponse().message("I can only reply to text messages for now."))
+    msg = resp.message()
+    msg.body(auto_reply(incoming_msg))
+    return str(resp)
+if __name__ == "__main__":
+    app.run(debug=True, port=5000)
